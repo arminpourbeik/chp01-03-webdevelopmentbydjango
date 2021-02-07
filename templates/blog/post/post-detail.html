@@ -1,0 +1,34 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.publish }} by {{ post.author }}</p>
+    <p>{{ post.body | linebreaks }}</p>
+
+    {% with comments.count as total_comments %}
+        <h2>{{ total_comments }} comment{{ total_comments | pluralize }}</h2>
+    {% endwith %}
+
+    <hr>
+    <!-- Similar posts -->
+    {% for post in similar_posts %}
+        <p>
+            <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+        </p>
+    {% empty %}
+        <p>There are no similar posts.</p>
+    {% endfor %}
+
+    <!-- Comments -->
+    {% for comment in comments %}
+        <h3>comment {{ forloop.counter }} by {{ comment.name }} at {{ comment.created }}</h3>
+        <p>{{ comment.body }}</p>
+    {% endfor %}
+
+    <!-- Comment form -->
+    <form method="POST">{% csrf_token %}
+        {{ form.as_p }}
+        <p><input type="submit" value="submit"></p>
+    </form>
+
+{% endblock %}
