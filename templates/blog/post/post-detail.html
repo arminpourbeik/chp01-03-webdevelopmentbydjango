@@ -9,7 +9,8 @@
         <h2>{{ total_comments }} comment{{ total_comments | pluralize }}</h2>
     {% endwith %}
 
-    <hr>
+    <div class="ui divider"></div>
+
     <!-- Similar posts -->
     {% for post in similar_posts %}
         <p>
@@ -18,17 +19,35 @@
     {% empty %}
         <p>There are no similar posts.</p>
     {% endfor %}
+    <div class="ui divider"></div>
 
+
+{#    {% for comment in comments %}#}
+{#        <h3>comment {{ forloop.counter }} by {{ comment.name }} at {{ comment.created }}</h3>#}
+{#        <p>{{ comment.body }}</p>#}
+{#    {% endfor %}#}
     <!-- Comments -->
+    <div class="ui comments">
     {% for comment in comments %}
-        <h3>comment {{ forloop.counter }} by {{ comment.name }} at {{ comment.created }}</h3>
-        <p>{{ comment.body }}</p>
+        <div class="comment">
+            <div class="content">
+                <div class="author"> {{ comment.name }}</div>
+                <div class="metadata">
+                    <div class="date">Comment {{ forloop.counter }} - {{ comment.created }}</div>
+                </div>
+                <div class="text">
+                    {{ comment.body }}
+                </div>
+            </div>
+        </div>
     {% endfor %}
 
+    </div>
+
     <!-- Comment form -->
-    <form method="POST">{% csrf_token %}
+    <form class="ui form" method="POST">{% csrf_token %}
         {{ form.as_p }}
-        <p><input type="submit" value="submit"></p>
+        <button class="ui button" type="submit">Submit</button>
     </form>
 
 {% endblock %}
